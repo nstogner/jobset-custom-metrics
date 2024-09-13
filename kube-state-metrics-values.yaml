@@ -13,6 +13,8 @@ customResourceState:
             # TODO: Add JobSet labels here that matter.
             some-custom-label: [metadata, labels, some-custom-jobset-label-key]
             # TODO: Add node selector labels here that matter.
+            # These labels should be the same across all replicatedJobs
+            # in the JobSet so it should be assume index 0 applies for all.
             tpu_accelerator: [spec, replicatedJobs, 0, template, spec, template, spec, nodeSelector, cloud.google.com/gke-tpu-accelerator]
             tpu_topology: [spec, replicatedJobs, 0, template, spec, template, spec, nodeSelector, cloud.google.com/gke-tpu-topology]
             # TODO: Consider how to get "spot" field...
