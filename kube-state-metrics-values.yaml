@@ -10,6 +10,15 @@ customResourceState:
             version: "v1alpha2"
           labelsFromPath:
             name: [metadata, name]
+            # TODO: Add JobSet labels here that matter.
+            some-custom-label: [metadata, labels, some-custom-jobset-label-key]
+            # TODO: Add node selector labels here that matter.
+            tpu_accelerator: [spec, replicatedJobs, 0, template, spec, template, spec, nodeSelector, cloud.google.com/gke-tpu-accelerator]
+            tpu_topology: [spec, replicatedJobs, 0, template, spec, template, spec, nodeSelector, cloud.google.com/gke-tpu-topology]
+            # TODO: Consider how to get "spot" field...
+            # it is possible that the field might be different on different
+            # replicatedJobs.
+            #spot: [spec, replicatedJobs, 0, template, spec, template, spec, nodeSelector, cloud.google.com/gke-spot]
           metrics:
             - name: "jobset_specified_replicas"
               help: "Total number of jobs in the jobset"
@@ -29,6 +38,12 @@ customResourceState:
                   labelsFromPath:
                     replicated_job_name: [name]
                   valueFrom: [ready]
+            - name: "jobset_restarts"
+              help: "Total number of times the JobSet has restarted"
+              each:
+                type: Gauge
+                gauge:
+                  path: [status, restarts]
 rbac:
   create: true
   useClusterRole: true
@@ -39,3 +54,12 @@ rbac:
 
 # Do not collect metrics for most standard resources (to avoid overloading k8s control plane).
 collectors: [jobs]
+
+resources:
+  # TODO: Modify the CPU and memory limits as needed!!!
+  limits:
+   cpu: 100m
+   memory: 64Mi
+  requests:
+   cpu: 10m
+   memory: 32Mi
