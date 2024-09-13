@@ -14,6 +14,9 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 helm upgrade --install -f kube-state-metrics-values.yaml kube-state-metrics prometheus-community/kube-state-metrics -n kube-system
 
+# if GKE GMP is enabled
+kubectl apply -f ./podmonitoring.yaml
+
 # Apply example jobset
 kubectl apply -f ./example-jobset.yaml
 kubectl apply -f ./example-tpu-jobset.yaml
@@ -42,3 +45,5 @@ kube_customresource_jobset_ready_replicas{customresource_group="jobset.x-k8s.io"
 # TYPE kube_customresource_jobset_restarts gauge
 kube_customresource_jobset_restarts{customresource_group="jobset.x-k8s.io",customresource_kind="JobSet",customresource_version="v1alpha2",name="example"} 3
 ```
+
+## Deploying the GKE
