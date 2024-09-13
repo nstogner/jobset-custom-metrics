@@ -26,11 +26,13 @@ kubectl port-forward -n kube-system svc/kube-state-metrics 8080:8080
 curl localhost:8080/metrics | grep jobset_
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100  178k    0  178k    0     0  4124k      0 --:--:-- --:--:-- --:--:-- 4150k
+100  5353    0  5353    0     0   469k      0 --:--:-- --:--:-- --:--:--  475k
 # HELP kube_customresource_jobset_specified_replicas Total number of jobs in the jobset
 # TYPE kube_customresource_jobset_specified_replicas gauge
-kube_customresource_jobset_specified_replicas{customresource_group="jobset.x-k8s.io",customresource_kind="JobSet",customresource_version="v1alpha2"} 2
+kube_customresource_jobset_specified_replicas{customresource_group="jobset.x-k8s.io",customresource_kind="JobSet",customresource_version="v1alpha2",name="example",replicated_job_name="other-workers"} 1
+kube_customresource_jobset_specified_replicas{customresource_group="jobset.x-k8s.io",customresource_kind="JobSet",customresource_version="v1alpha2",name="example",replicated_job_name="workers"} 2
 # HELP kube_customresource_jobset_ready_replicas Total number of jobs in a ready state for the jobset
 # TYPE kube_customresource_jobset_ready_replicas gauge
-kube_customresource_jobset_ready_replicas{customresource_group="jobset.x-k8s.io",customresource_kind="JobSet",customresource_version="v1alpha2"} 2
+kube_customresource_jobset_ready_replicas{customresource_group="jobset.x-k8s.io",customresource_kind="JobSet",customresource_version="v1alpha2",name="example",replicated_job_name="other-workers"} 1
+kube_customresource_jobset_ready_replicas{customresource_group="jobset.x-k8s.io",customresource_kind="JobSet",customresource_version="v1alpha2",name="example",replicated_job_name="workers"} 2
 ```
