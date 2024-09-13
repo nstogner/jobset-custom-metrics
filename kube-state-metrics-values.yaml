@@ -10,6 +10,7 @@ customResourceState:
             version: "v1alpha2"
           labelsFromPath:
             name: [metadata, name]
+            uid: [metadata, uid]
             # TODO: Add JobSet labels here that matter.
             some-custom-label: [metadata, labels, some-custom-jobset-label-key]
             # TODO: Add node selector labels here that matter.
