@@ -1,0 +1,32 @@
+customResourceState:
+  enabled: true
+  config:
+    kind: CustomResourceStateMetrics
+    spec:
+      resources:
+        - groupVersionKind:
+            group: jobset.x-k8s.io
+            kind: "JobSet"
+            version: "v1alpha2"
+          metrics:
+            - name: "jobset_specified_replicas"
+              help: "Total number of jobs in the jobset"
+              each:
+                type: Gauge
+                gauge:
+                  # TODO: Sum for all replicatedJobs
+                  path: [spec, replicatedJobs, "0", replicas]
+            - name: "jobset_ready_replicas"
+              help: "Total number of jobs in a ready state for the jobset"
+              each:
+                type: Gauge
+                gauge:
+                  # TODO: Sum for all replicatedJobs
+                  path: [status, replicatedJobsStatus, "0", ready]
+rbac:
+  create: true
+  useClusterRole: true
+  extraRules:
+  - apiGroups: ["jobset.x-k8s.io"]
+    resources: ["jobsets"]
+    verbs: ["list", "watch"]
