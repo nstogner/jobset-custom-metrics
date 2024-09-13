@@ -8,21 +8,27 @@ customResourceState:
             group: jobset.x-k8s.io
             kind: "JobSet"
             version: "v1alpha2"
+          labelsFromPath:
+            name: [metadata, name]
           metrics:
             - name: "jobset_specified_replicas"
               help: "Total number of jobs in the jobset"
               each:
                 type: Gauge
                 gauge:
-                  # TODO: Sum for all replicatedJobs
-                  path: [spec, replicatedJobs, "0", replicas]
+                  path: [spec, replicatedJobs]
+                  labelsFromPath:
+                    replicated_job_name: [name]
+                  valueFrom: [replicas]
             - name: "jobset_ready_replicas"
               help: "Total number of jobs in a ready state for the jobset"
               each:
                 type: Gauge
                 gauge:
-                  # TODO: Sum for all replicatedJobs
-                  path: [status, replicatedJobsStatus, "0", ready]
+                  path: [status, replicatedJobsStatus]
+                  labelsFromPath:
+                    replicated_job_name: [name]
+                  valueFrom: [ready]
 rbac:
   create: true
   useClusterRole: true
@@ -30,3 +36,6 @@ rbac:
   - apiGroups: ["jobset.x-k8s.io"]
     resources: ["jobsets"]
     verbs: ["list", "watch"]
+
+# Do not collect metrics for most standard resources (to avoid overloading k8s control plane).
+collectors: [jobs]

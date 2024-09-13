@@ -22,3 +22,19 @@ spec:
                 - sleep
               args:
                 - 1000s
+  - name: other-workers
+    replicas: 1 # set to number of node pools
+    template:
+      spec:
+        parallelism: 3
+        completions: 3
+        backoffLimit: 10
+        template:
+          spec:
+            containers:
+            - name: sleep
+              image: busybox
+              command: 
+                - sleep
+              args:
+                - 1000s
